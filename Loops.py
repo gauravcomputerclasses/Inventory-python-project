@@ -1,8 +1,10 @@
-# break & Continue
+n = int(input("Enter the number "))
+temp = n
+d = 0
+while (n > 0):
+    digit = n % 10
+    d = d*10 + digit
+    n //= 10
 
-for i in range (1,11):
-    print(i)
-    if (i == 5):
-        continue
-    print("Gaurav",i)
-    
+print("Original Num =>",temp)
+print("Reversed Num =>",d)

@@ -1,10 +1,27 @@
 userChoice = "y"
-stock = {
-    "apples": 25,
-    "bananas": 40,
-    "oranges": 18,
-}
+# error handle
+
+try:
+    file = open("stock.txt","r")
+except FileNotFoundError:
+    print("File Not Exists")
+    print("Creating File...")
+    file = open("stock.txt","w+")
+    file.write("{}")
+    print("File Created")
+    file.close()
+finally:
+    file = open("stock.txt","r")
+
+
+# fetching Keys From Dict
+stock = eval(file.read())
 allItems = stock.keys()
+
+def addToFile(data):
+    writeFile = open("stock.txt","w")
+    writeFile.write(data)
+    writeFile.close()
 
 def displayMenu():
     print()
@@ -37,17 +54,18 @@ def addItem():
     if (itemName in allItems):
         currentQty = stock.get(itemName) #25
         stock.update({itemName:currentQty+itemQty}) #35
-        print(stock) # return
+        addToFile(str(stock))
         
     else:
         stock[itemName] = itemQty
-        print(stock) # return
-     
+        addToFile(str(stock)) 
+
 def removeItem():
     itemName = input("Enter Item Name -> ").lower()
     
     if (itemName in allItems):
         stock.pop(itemName)
+        addToFile(str(stock))
         finalResult(f"{itemName} removed successfully")
     else:
         finalResult("Item Not Found")    
@@ -61,12 +79,13 @@ def displyItems():
         for i in allItems:
               print(f"{i:<15}{stock.get(i):<10}") 
     
-def updateItems():
+def updateItems():  
     itemName = input("Enter Item Name -> ").lower()
     if (itemName in allItems):
         print("Item Found\n")
         itemQty = int(input("Enter Updated Quantity "))
         stock[itemName] = itemQty
+        addToFile(str(stock))
         finalResult("Updated\n")
     else:
         finalResult("Item Not Found") 
@@ -90,3 +109,5 @@ def finalResult(value):
 while (userChoice.lower() == "y"):
     displayMenu()
     if (userInput()=="Invalid Choice") : break
+
+file.close()
